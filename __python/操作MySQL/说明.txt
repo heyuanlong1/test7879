@@ -1,0 +1,7 @@
+https://sourceforge.net/projects/mysql-python/
+https://pypi.python.org/pypi/MySQL-python
+
+此处用 MySQL-python 1.2.5
+
+安装：
+python setup.py install

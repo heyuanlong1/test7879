@@ -1,0 +1,42 @@
+------------------------mongo----------------------------------
+mongo 3.2.10
+用源码安装可以指定mongo的目录结构
+例如：
+/data/mongo
+		/bin	可执行文件
+		/data	数据
+		/conf	配置
+		/log	日志
+
+----迁移mongodb
+1.直接把完整的mongo整个拷贝到机子，目前版本的目录是mongo目录里有（bin,data,conf,log四个目录）
+2.启动  ./mongod --dbpath=/data/mongo/data/ --logpath=/data/mongo/log/mongodb.log  --fork
+3.启动  ./mongod -f mongodb.conf 
+mongodb.conf文件内容
+
+[root@localhost etc]# cat mongodb.conf 
+port=27017
+dbpath=/data/mongo/data/
+logpath=/data/mongo/log/mongodb.log
+logappend=true
+fork=true
+
+
+
+https://www.mongodb.com/download-center#community
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-linux/
+https://github.com/mongodb
+https://my.oschina.net/pwd/blog/399374
+
+
+
+------------------------mongo-c-driver-------------------------
+mongo-c-driver 1.3.6
+https://github.com/mongodb/mongo-c-driver/releases/tag/1.3.6
+http://mongoc.org/libmongoc/current/installing.html#installing-unix
+http://www.cnblogs.com/oloroso/p/5733083.html
+
+
+source /etc/profile
+gcc -o test test.c $(pkg-config --cflags --libs libmongoc-1.0)
+./test

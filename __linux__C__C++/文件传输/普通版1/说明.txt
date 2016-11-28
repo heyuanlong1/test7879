@@ -1,0 +1,7 @@
+./us 6000
+./uc 127.0.0.1 6000 4da96554-040c-4f86-a988-c37bb4e0c367.jpg
+
+
+
+serverAddr.sin_port = htons(port);  #忘记了写htons，客户端一直连不上去 Connection refused 。
+

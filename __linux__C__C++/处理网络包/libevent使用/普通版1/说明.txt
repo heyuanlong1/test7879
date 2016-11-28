@@ -1,0 +1,52 @@
+./us 6000
+./uc 127.0.0.1 6000 2
+./uc 127.0.0.1 6000 3
+./uc 127.0.0.1 6000 4
+要开多个客户端。
+
+
+安装libevent
+https://github.com/libevent/libevent/tree/release-2.0.22-stable
+libevent-2.0.22-stable.tar.gz
+./configure
+make
+sudo make install
+source /etc/profile
+
+
+
+还不懂为什么
+void signalCb(int fd, short events, void* arg)
+的结果是哪样？？？
+
+
+
+
+
+
+lievent官方文档
+http://www.wangafu.net/~nickm/libevent-book/
+libevent翻译文档
+http://blog.csdn.net/Windeal/article/category/6428078
+
+
+
+
+
+
+
+
+
+event_new() returns a new event that can be used in future calls to event_add() and event_del();
+
+To deallocate an event, call event_free(). It is safe to call event_free() on an event that is pending or active: doing so makes the event non-pending and inactive before deallocating it.
+
+event_assign()和event_new()：前者不分配空间
+
+
+
+
+
+
+
+

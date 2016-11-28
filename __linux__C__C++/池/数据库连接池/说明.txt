@@ -1,0 +1,12 @@
+
+find / -name libmysqlclient.so
+若无，则要 yum install libmysqlclient-dev
+
+ln -s /opt/lampp/var/mysql/mysql.sock /var/lib/mysql/mysql.sock
+g++ -o testMysql testMysql.cpp -I/usr/include/mysql -L/usr/lib64/mysql -lmysqlclient
+g++ testPipe.cpp -o testPipe
+
+
+
+printf("%s\n",bufFd );
+write(STDOUT_FILENO,bufFd,strlen(bufFd));

@@ -1,0 +1,57 @@
+git clone https://github.com/redis/hiredis.git
+make 既可生成它的动态库和静态库
+make install
+
+
+
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+export LD_LIBRARY_PATH=/usr/local/lib
+
+
+
+
+麻蛋，阿里云根本就没把/usr/local/lib当做库的搜索路径之一，cao，搞死我了。
+编译通过，但是ldd没发现库，那么原因就是两个"没有这个文件"和"没有这个库对应的搜索路径"。
+
+
+编译静态库
+cr标志告诉ar将object文件封装(archive),我们可以使用nm -s 命令来查看.a文件的内容
+ar -cr libmyhello.a hello.o （或-cvr ）
+
+编译动态库
+$gcc -c -fPIC  test1.c
+$gcc -c -fPIC  test2.c
+-fPIC告诉gcc将源代码编译成共享的object文件,PIC(Position-Independent Code)非位置依赖性代码。
+$gcc -shared -fPIC -o libtest.so test1.o test2.o
+
+
+
+
+gcc -o testhiredis testhiredis.c `pkg-config hiredis --libs --cflags`
+
+
+
+
+
+
+
+
+方法一：在配置文件/etc/ld.so.conf中指定动态库搜索路径。
+可以通过编辑配置文件/etc/ld.so.conf来指定动态库的搜索路径，该文件中每行为一个动态库搜索路径。每次编辑完该文件后，都必须运行命令ldconfig使修改后的配置生效。我们通过例1来说明该方法。
+
+方法二：通过环境变量LD_LIBRARY_PATH指定动态库搜索路径。
+通过设定环境变量LD_LIBRARY_PATH也可以指定动态库搜索路径。当通过该环境变量指定多个动态库搜索路径时，路径之间用冒号"："分隔。
+
+方法三：在编译目标代码时指定该程序的动态库搜索路径。
+还可以在编译目标代码时指定程序的动态库搜索路径。这是通过gcc 的参数"-Wl,-rpath,"指定（如例3所示）。当指定多个动态库搜索路径时，路径之间用冒号"："分隔。
+
+方法四：默认的动态库搜索路径/lib；
+
+方法五：默认的动态库搜索路径/usr/lib。
+
+
+
+pkg-config介绍
+pkg-config用来检索系统中安装库文件的信息。典型的是用作库的编译和连接。如在Makefile中：
+gcc -o testhiredis testhiredis.c `pkg-config hiredis --libs --cflags`
+

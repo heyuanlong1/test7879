@@ -1,0 +1,12 @@
+conf_room_server=127.0.0.1
+conf_room_server=127.0.0.1
+conf_lobby_server_upd_port=6001
+
+log_error_file=/home/heyuanlong/ctesta/log/error.log
+log_warning_file=/home/heyuanlong/ctesta/log/warning.log
+log_info_file=/home/heyuanlong/ctesta/log/info.log
+
+mysql_host=localhost
+mysql_user=root
+mysql_password=4hylWcHNJGp
+mysql_db=test

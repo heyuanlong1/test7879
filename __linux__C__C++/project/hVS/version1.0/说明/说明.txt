@@ -1,0 +1,15 @@
+1 抽象为lobby 和 room 服务。
+2 lobbymanager 和 roommanager
+3 lobbymanager管理这lobby和roommanager
+4 roommanager管理room
+
+
+
+对于100万并发的游戏服来说，一台lobby服务器和多台room服务器。
+
+  
+
+
+
+
+

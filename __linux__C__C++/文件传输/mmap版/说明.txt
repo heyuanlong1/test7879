@@ -1,0 +1,8 @@
+./us 6000
+./uc 127.0.0.1 6000 4da96554-040c-4f86-a988-c37bb4e0c367.jpg
+
+
+
+unsigned long sendFileSize = 0; 刚开这里忘记初始化了，导致send(sockLink,mmapFile + sendFileSize ,fileSize - sendFileSize,0) 一直失败，搞死我了。
+
+声明的变量都应该立刻初始化。
