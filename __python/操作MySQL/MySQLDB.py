@@ -7,9 +7,9 @@ import MySQLdb
 import time, os, sched 
 
 ##全局定义
-MYSQL_HOST		='localhost'
-MYSQL_PORT		=3306
-MYSQL_USER		='root'
+MYSQL_HOST		='****'
+MYSQL_PORT		=***
+MYSQL_USER		='****'
 MYSQL_PASSWORD	='*********'
 
 
