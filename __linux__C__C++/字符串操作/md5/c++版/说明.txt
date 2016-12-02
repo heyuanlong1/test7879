@@ -1,0 +1,6 @@
+
+std::string str
+MD5 md5(str);
+return md5.md5();
+
+¼òµ¥°É

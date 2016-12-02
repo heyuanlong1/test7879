@@ -71,7 +71,14 @@ int main(int argc, char const *argv[])
     }else{
         cout<<"no empty"<<endl;
     }
-
+    mylist.push_back (31);   
+    mylist.push_back (546);   
+    mylist.push_back (45);   
+    mylist.push_back (45654);   
+    mylist.push_back (44);  
+    mylist.sort();
+    showList(second); 
+    
     cout<<"list size:"<<mylist.size()<<endl;    //元素数量
 	showList(mylist); 
 	return 0;
