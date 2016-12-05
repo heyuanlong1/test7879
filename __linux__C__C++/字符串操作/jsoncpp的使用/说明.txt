@@ -1,0 +1,4 @@
+下载源码  执行 python amalgamate.py 生成合并文件
+dist/json/json.h
+dist/json/json-forwards.h
+dist/jsoncpp.cpp
