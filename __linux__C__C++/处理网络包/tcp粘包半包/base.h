@@ -36,7 +36,7 @@ struct msg_s
 	head_t head;
 	int userid;
 	int dataSize;
-	int data[0];
+	char data[0];
 };
 
 typedef struct leave_s leave_t;
