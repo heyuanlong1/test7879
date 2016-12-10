@@ -1,5 +1,5 @@
 
-CC=gcc
+CC=g++
 SERVE=test
 
 
@@ -9,8 +9,8 @@ SERVE=test
 
 all:    $(SERVE) 
 
-$(SERVE):test.c MsConfig.c
-	$(CC) -g -o  $(SERVE) test.c MsConfig.c
+$(SERVE):test.cpp CommonMutex.h
+	$(CC) -g -o  $(SERVE) test.cpp -lpthread
 
 clean:
 	rm -rf $(SERVE)
