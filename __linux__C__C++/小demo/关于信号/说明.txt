@@ -1,0 +1,58 @@
+信号处理的方法有三种：
+	1.使用signal函数进行处理，
+	2.使用sigaction函数进行处理，
+	3.使用信号集函数。
+
+处理信号：
+	1.默认动作
+	2.忽略
+	3.捕捉
+
+{
+	the signal SIGKILL and SIGSTOP cannot be caught,blocked of ignored
+	SIGKILL和SIGSTOP是不能被改变的
+
+	ctrl+c SIGINT
+	ctrl+z SIGTSTP
+	ctrl+\ SIGQUIT
+	段错误 11  SIGEGV  非法操作内存
+	SIGPIPE 向一个没有读端的管道写数据，默认动作是终止进程
+}
+
+使用kill -9 PID 关闭
+kill -SIGHUP PID
+kill -SIGTERM PID
+man 7 signal查看信号的一些说明
+
+
+5.9 SIGCHLD信号处理
+	5.9.1 SIGCHLD的产生条件
+	子进程终止时
+	子进程接收到SIGSTOP信号停止时
+	子进程处在停止态，接受到SIGCONT后唤醒时
+
+	所以可以接受到信号后waitpid
+	void do_sig_child(int signo)
+	{
+		int status;
+		pid_t pid;
+		while ((pid = waitpid(0, &status, WNOHANG)) > 0) {
+				if (WIFEXITED(status))
+					printf("child %d exit %d\n", pid, WEXITSTATUS(status));
+				else if (WIFSIGNALED(status))
+					printf("child %d cancel signal %d\n", pid, WTERMSIG(status));
+		}
+	}
+
+
+
+统一时间源
+	信号写到管道里，主循环监听该管道。 libevent就是这样干的。看到代码5sig.cpp
+
+
+
+
+
+
+
+
