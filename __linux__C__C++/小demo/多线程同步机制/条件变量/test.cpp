@@ -52,7 +52,8 @@ int main(int argc, char const *argv[])
 	usleep(10000);
 	while(1)
 	{
-		cond.signal();
+		//cond.signal();
+		cond.signal_broadcast();
 		printf("post\n");
 		usleep(NUMS);
 	}

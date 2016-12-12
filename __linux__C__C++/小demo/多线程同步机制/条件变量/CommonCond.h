@@ -38,6 +38,11 @@ public:
     {
         return pthread_cond_signal( &m_cond ) == 0;
     }
+    bool signal_broadcast()
+    {
+        return pthread_cond_broadcast( &m_cond ) == 0;
+    }
+
 
 private:
     pthread_mutex_t m_mutex;

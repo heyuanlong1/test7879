@@ -1,0 +1,3 @@
+
+1.  http://blog.chinaunix.net/uid-26833883-id-3230813.html  无关进程间的同步
+2.  ./test 父子进程间的同步。

@@ -2,6 +2,9 @@
 #define __BASE__
 
 
+
+#pragma pack(1)
+
 #define FROM_TYPE_CLIENT 1000
 #define CMD_REG 1001
 #define CMD_LOGIN 1002
