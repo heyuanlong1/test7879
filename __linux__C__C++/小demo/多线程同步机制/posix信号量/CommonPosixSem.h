@@ -18,17 +18,17 @@ public:
 	}
 	int post()
 	{
-		sem_post(&s);
+		return sem_post(&s);
 	}
 	int wait()
 	{
-		sem_wait(&s);
+		return sem_wait(&s);
 	}
 	int strwait()
 	{
-		sem_trywait(&s);
+		return sem_trywait(&s);
 	}
-	sem_t* getmutex()
+	sem_t* getSem()
 	{
 		return &s;
 	}
