@@ -10,7 +10,8 @@
 
 int main(int argc, char const *argv[])
 {
-	systemVSem s(ftok(".", 'a'),1);
+	systemVSem s;
+	s.init(ftok(".", 'a'),1);
 
 	int result = fork();
 	

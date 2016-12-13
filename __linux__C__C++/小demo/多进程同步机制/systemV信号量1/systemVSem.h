@@ -14,20 +14,29 @@ union semun
 class systemVSem
 {
 public:
-	systemVSem(key_t key,int nums)
+	systemVSem()
+	{
+		
+	}
+	int init(key_t key,int nums)
 	{
 		if(nums == 0)
 			nums = 1;
 
 		this->nums = nums;
 		sem_id = semget(key,  nums, 0666|IPC_CREAT); /* 创建一个信号量*/
+		if(sem_id < 0)
+			return sem_id;
+
 		union semun sem_union;
 		for (int i = 0; i < nums; ++i)
 		{
-			sem_union.val = 1;
-			if (semctl(sem_id, i, SETVAL, sem_union) == -1)
-				perror("Initialize semaphore");				
+			sem_union.val = 1;						//初始信号量为1
+			if (semctl(sem_id, i, SETVAL, sem_union) < 0 ){
+				return -1;		
+			}	
 		}
+		return 0;
 	}
 	~systemVSem()
 	{	
@@ -38,7 +47,7 @@ public:
 				perror("Delete semaphore");
 		}
 	}
-	int sem_p(int n)
+	int sem_p(int n)  							//信号量减1
 	{
 		struct sembuf sem_b;
 		sem_b.sem_num = n; /*id*/
@@ -52,7 +61,7 @@ public:
 		return 0;
 	}
 
-	int sem_v(int n)
+	int sem_v(int n) 							//信号量加1
 	{
 		struct sembuf sem_b;
 		sem_b.sem_num = n; /*id*/

@@ -1,0 +1,7 @@
+listary
+everything
+Sublime Text 2
+Sublime Text3
+Atom
+Notepad++
+EditPlus
