@@ -1,0 +1,10 @@
+
+http://m.blog.chinaunix.net/uid-21768364-id-2870977.html
+http://www.cnblogs.com/dyllove98/archive/2013/06/28/3161371.html
+http://m.blog.csdn.net/article/details?id=18654693
+
+
+
+./test   是写锁
+./test2	 是读锁
+./test3  是读锁
