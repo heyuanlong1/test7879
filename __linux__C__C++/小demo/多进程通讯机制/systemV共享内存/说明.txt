@@ -1,0 +1,25 @@
+【共享内存分类】
+1. POSIX共享内存对象
+2. POSIX内存映射文件
+3. SYSTEM V共享内存
+
+System V 与Posix 共享内存区
+二者的差别是：
+（1）Posix共享内存区是先调用shm_open然后再调用mmap，System V 共享内存区是先调用shmget再调用shmat。
+
+（2）Posix共享内存区对象的大小可在任何时刻通过ftruncate修改，而System V 共享内存区对象的大小是在调用shmget创建时固定下来的。
+
+
+
+共享内存是最高效的IPC机制，因为他不涉及进程之间的任何数据传输，。这种高效率带来的问题是，我们必须用其他辅助手段来同步进程对共享内存的访问，否则会产生竞态条件，因此，共享内存通常和其他进程间通信方式一起使用。
+
+1.用于父子进程。
+shmid = shmget(IPC_PRIVATE, BUFFER_SIZE, 0666)
+
+2.用于无关进程
+shmget((key_t)1234,SHMSZ,IPC_CREAT|0666); 
+
+
+
+./test 输入end才会结束父子进程。
+./test1 
