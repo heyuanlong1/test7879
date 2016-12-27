@@ -1,0 +1,5 @@
+源码:  https://github.com/rxi/dyad
+
+python ./example/build.py echoserv.c
+./bin/echoserv
+nc 127.0.0.1 8000
