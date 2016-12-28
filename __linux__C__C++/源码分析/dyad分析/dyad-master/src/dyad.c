@@ -42,12 +42,12 @@
 
 
 #ifdef _WIN32
-  #define close(a) closesocket(a)
-  #define getsockopt(a,b,c,d,e) getsockopt((a),(b),(c),(char*)(d),(e))
-  #define setsockopt(a,b,c,d,e) setsockopt((a),(b),(c),(char*)(d),(e))
-  #define select(a,b,c,d,e) select((int)(a),(b),(c),(d),(e))
-  #define bind(a,b,c) bind((a),(b),(int)(c))
-  #define connect(a,b,c) connect((a),(b),(int)(c))
+  #define close(a)                closesocket(a)
+  #define getsockopt(a,b,c,d,e)   getsockopt((a),(b),(c),(char*)(d),(e))
+  #define setsockopt(a,b,c,d,e)   setsockopt((a),(b),(c),(char*)(d),(e))
+  #define select(a,b,c,d,e)       select((int)(a),(b),(c),(d),(e))
+  #define bind(a,b,c)             bind((a),(b),(int)(c))
+  #define connect(a,b,c)          connect((a),(b),(int)(c))
 
   #undef  errno
   #define errno WSAGetLastError()
@@ -56,7 +56,8 @@
   #define EWOULDBLOCK WSAEWOULDBLOCK
 
   const char *inet_ntop(int af, const void *src, char *dst, socklen_t size) {
-    union { struct sockaddr sa; struct sockaddr_in sai;
+    union { struct sockaddr sa; 
+            struct sockaddr_in sai;
             struct sockaddr_in6 sai6; } addr;
     int res;
     memset(&addr, 0, sizeof(addr));
@@ -98,7 +99,8 @@ static void dyad_free(void *ptr) {
 
 
 /*===========================================================================*/
-/* Vec (dynamic array)                                                       */
+/* Vec (dynamic array)
+memsz 是单个变量的size                                                       */
 /*===========================================================================*/
 
 static void vec_expand(char **data, int *length, int *capacity, int memsz) {
@@ -112,6 +114,7 @@ static void vec_expand(char **data, int *length, int *capacity, int memsz) {
   }
 }
 
+//清除从start开始的count个变量。
 static void vec_splice(
   char **data, int *length, int *capacity, int memsz, int start, int count
 ) {
@@ -184,6 +187,7 @@ typedef struct {
   fd_set *fds[SELECT_MAX];
 } SelectSet;
 
+//  DYAD_UNSIGNED_BIT = 32      CHAR_BIT = 8
 #define DYAD_UNSIGNED_BIT (sizeof(unsigned) * CHAR_BIT)
 
 
@@ -203,15 +207,17 @@ static void select_grow(SelectSet *s) {
   s->capacity = s->capacity ? s->capacity << 1 : 1;
   for (i = 0; i < SELECT_MAX; i++) {
     s->fds[i] = dyad_realloc(s->fds[i], s->capacity * sizeof(fd_set));
-    memset(s->fds[i] + oldCapacity, 0,
-           (s->capacity - oldCapacity) * sizeof(fd_set));
+
+    memset(s->fds[i] + oldCapacity, 0,(s->capacity - oldCapacity) * sizeof(fd_set));
   }
 }
 
 
 static void select_zero(SelectSet *s) {
   int i;
-  if (s->capacity == 0) return;
+  if (s->capacity == 0) 
+      return;
+
   s->maxfd = 0;
   for (i = 0; i < SELECT_MAX; i++) {
 #if _WIN32
@@ -224,6 +230,7 @@ static void select_zero(SelectSet *s) {
 
 
 static void select_add(SelectSet *s, int set, dyad_Socket fd) {
+
 #ifdef _WIN32
   fd_set *f;
   if (s->capacity == 0) select_grow(s);
@@ -232,7 +239,9 @@ static void select_add(SelectSet *s, int set, dyad_Socket fd) {
   }
   f = s->fds[set];
   f->fd_array[f->fd_count++] = fd;
+
 #else
+
   unsigned *p;
   while (s->capacity * FD_SETSIZE < fd) {
     select_grow(s);
@@ -241,10 +250,12 @@ static void select_add(SelectSet *s, int set, dyad_Socket fd) {
   p[fd / DYAD_UNSIGNED_BIT] |= 1 << (fd % DYAD_UNSIGNED_BIT);
   if (fd > s->maxfd) s->maxfd = fd;
 #endif
+
 }
 
 
 static int select_has(SelectSet *s, int set, dyad_Socket fd) {
+
 #ifdef _WIN32
   unsigned i;
   fd_set *f;
@@ -256,12 +267,14 @@ static int select_has(SelectSet *s, int set, dyad_Socket fd) {
     }
   }
   return 0;
+
 #else
   unsigned *p;
   if (s->maxfd < fd) return 0;
   p = (unsigned*) s->fds[set];
   return p[fd / DYAD_UNSIGNED_BIT] & (1 << (fd % DYAD_UNSIGNED_BIT));
 #endif
+
 }
 
 
@@ -270,37 +283,40 @@ static int select_has(SelectSet *s, int set, dyad_Socket fd) {
 /*===========================================================================*/
 
 typedef struct {
-  int event;
-  dyad_Callback callback;
-  void *udata;
+  int             event;
+  dyad_Callback   callback;
+  void            *udata;
 } Listener;
 
 
 struct dyad_Stream {
-  int state, flags;
-  dyad_Socket sockfd;
-  char *address;
-  int port;
-  int bytesSent, bytesReceived;
-  double lastActivity, timeout;
-  Vec(Listener) listeners;
-  Vec(char) lineBuffer;
-  Vec(char) writeBuffer;
-  dyad_Stream *next;
+  int               state;
+  int               flags;
+  dyad_Socket       sockfd;
+  char              *address;
+  int               port;
+  int               bytesSent;
+  int               bytesReceived;
+  double            lastActivity;
+  int               timeout;
+  Vec(Listener)     listeners;              //监听的事件数组
+  Vec(char)         lineBuffer;
+  Vec(char)         writeBuffer;
+  dyad_Stream       *next;
 };
 
 #define DYAD_FLAG_READY   (1 << 0)
 #define DYAD_FLAG_WRITTEN (1 << 1)
 
 
-static dyad_Stream *dyad_streams;
-static int dyad_streamCount;
-static char dyad_panicMsgBuffer[128];
-static dyad_PanicCallback panicCallback;
-static SelectSet dyad_selectSet;
-static double dyad_updateTimeout = 1;
-static double dyad_tickInterval = 1;
-static double dyad_lastTick = 0;
+static dyad_Stream          *dyad_streams;
+static int                  dyad_streamCount;
+static char                 dyad_panicMsgBuffer[128];
+static dyad_PanicCallback   panicCallback;
+static SelectSet            dyad_selectSet;
+static double               dyad_updateTimeout = 1;
+static double               dyad_tickInterval = 1;
+static double               dyad_lastTick = 0;
 
 
 static void panic(const char *fmt, ...) {
@@ -308,11 +324,13 @@ static void panic(const char *fmt, ...) {
   va_start(args, fmt);
   vsprintf(dyad_panicMsgBuffer, fmt, args);
   va_end(args);
+
   if (panicCallback) {
     panicCallback(dyad_panicMsgBuffer);
   } else {
     printf("dyad panic: %s\n", dyad_panicMsgBuffer);
   }
+  
   exit(EXIT_FAILURE);
 }
 
@@ -348,6 +366,7 @@ static void updateTickTimer(void) {
   if (dyad_lastTick == 0) {
     dyad_lastTick = dyad_getTime();
   }
+
   while (dyad_lastTick < dyad_getTime()) {
     /* Emit event on all streams */
     dyad_Stream *stream;
@@ -418,16 +437,19 @@ static void stream_emitEvent(dyad_Stream *stream, dyad_Event *e) {
   e->stream = stream;
   for (i = 0; i < stream->listeners.length; i++) {
     Listener *listener = &stream->listeners.data[i];
+
     if (listener->event == e->type) {
       e->udata = listener->udata;
       listener->callback(e);
     }
     /* Check to see if this listener was removed: If it was we decrement `i`
      * since the next listener will now be in this ones place */
+    //在回调里被删除了
     if (listener != &stream->listeners.data[i]) {
       i--;
     }
   }
+
 }
 
 
@@ -446,8 +468,10 @@ static void stream_error(dyad_Stream *stream, const char *msg, int err) {
 
 
 static void stream_initAddress(dyad_Stream *stream) {
-  union { struct sockaddr sa; struct sockaddr_storage sas;
-          struct sockaddr_in sai; struct sockaddr_in6 sai6; } addr;
+  union { struct sockaddr sa; 
+          struct sockaddr_storage sas;
+          struct sockaddr_in sai; 
+          struct sockaddr_in6 sai6; } addr;
   socklen_t size;
   memset(&addr, 0, sizeof(addr));
   size = sizeof(addr);
@@ -458,6 +482,7 @@ static void stream_initAddress(dyad_Stream *stream) {
       return;
     }
   }
+
   if (addr.sas.ss_family == AF_INET6) {
     stream->address = dyad_realloc(NULL, INET6_ADDRSTRLEN);
     inet_ntop(AF_INET6, &addr.sai6.sin6_addr, stream->address,
@@ -490,9 +515,8 @@ static void stream_setSocket(dyad_Stream *stream, dyad_Socket sockfd) {
 }
 
 
-static int stream_initSocket(
-  dyad_Stream *stream, int domain, int type, int protocol
-) {
+static int stream_initSocket(dyad_Stream *stream, int domain, int type, int protocol) 
+{
   stream->sockfd = socket(domain, type, protocol);
   if (stream->sockfd == INVALID_SOCKET) {
     stream_error(stream, "could not create socket", errno);
@@ -532,15 +556,18 @@ static void stream_handleReceivedData(dyad_Stream *stream) {
       }
     }
     data[size] = 0;
+
     /* Update status */
     stream->bytesReceived += size;
     stream->lastActivity = dyad_getTime();
+
     /* Emit data event */
     e = createEvent(DYAD_EVENT_DATA);
     e.msg = "received data";
     e.data = data;
     e.size = size;
     stream_emitEvent(stream, &e);
+
     /* Check stream state in case it was closed during one of the data event
      * handlers. */
     if (stream->state != DYAD_STATE_CONNECTED) {
@@ -577,6 +604,7 @@ static void stream_handleReceivedData(dyad_Stream *stream) {
           }
         }
       }
+
       if (start == stream->lineBuffer.length) {
         vec_clear(&stream->lineBuffer);
       } else {
@@ -641,6 +669,7 @@ static int stream_flushWriteBuffer(dyad_Stream *stream) {
     } else {
       vec_splice(&stream->writeBuffer, 0, size);
     }
+
     /* Update status */
     stream->bytesSent += size;
     stream->lastActivity = dyad_getTime();
@@ -874,16 +903,14 @@ dyad_Stream *dyad_newStream(void) {
   stream->sockfd = INVALID_SOCKET;
   stream->lastActivity = dyad_getTime();
   /* Add to list and increment count */
-  stream->next = dyad_streams;
+  stream->next = dyad_streams;        //头插式
   dyad_streams = stream;
   dyad_streamCount++;
   return stream;
 }
 
 
-void dyad_addListener(
-  dyad_Stream *stream, int event, dyad_Callback callback, void *udata
-) {
+void dyad_addListener(dyad_Stream *stream, int event, dyad_Callback callback, void *udata) {
   Listener listener;
   listener.event = event;
   listener.callback = callback;
@@ -892,9 +919,7 @@ void dyad_addListener(
 }
 
 
-void dyad_removeListener(
-  dyad_Stream *stream, int event, dyad_Callback callback, void *udata
-) {
+void dyad_removeListener( dyad_Stream *stream, int event, dyad_Callback callback, void *udata) {
   int i = stream->listeners.length;
   while (i--) {
     Listener *x = &stream->listeners.data[i];
@@ -948,9 +973,7 @@ void dyad_end(dyad_Stream *stream) {
 }
 
 
-int dyad_listenEx(
-  dyad_Stream *stream, const char *host, int port, int backlog
-) {
+int dyad_listenEx(dyad_Stream *stream, const char *host, int port, int backlog) {
   struct addrinfo hints, *ai = NULL;
   int err, optval;
   char buf[64];
