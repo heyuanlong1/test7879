@@ -18,18 +18,18 @@ import time, os, sched ,sys
 MYSQL_HOST		='localhost'
 MYSQL_PORT		=3306
 MYSQL_USER		='root'
-MYSQL_PASSWORD	='******'
+MYSQL_PASSWORD	='CQMYG14dss'
 TOP_N 			=10
 
 
 
 sql_connect=MySQLdb.connect(host=MYSQL_HOST,port=MYSQL_PORT,user=MYSQL_USER,passwd=MYSQL_PASSWORD) 
 cursor = sql_connect.cursor() 
-
+cursor.execute('SET NAMES UTF8')
 
 def generate_insert(schema,table,list):
-	strstr =  "insert into "+schema+"."+table+ " values();"
-	print strstr
+	#strstr =  "insert into "+schema+"."+table+ " values();"
+	#print strstr
 
 	strstr =  "insert into "+schema+"."+table+ "("
 	max_i = len(list) - 1
@@ -71,28 +71,45 @@ def generate_delete(schema,table,list):
 
 def generate_select(schema,table,list):
 	strstr =  "select  * from "+schema+"."+table+ " limit 100;"
-	print strstr
+	#print strstr
 
 	max_i = len(list) - 1
-	strstr = "select "
+	strstr = ""
 	for i in range(len(list)):
 		strstr += list[i][0]
 		if i != max_i:
 			strstr += ","
 		else:
 			pass
-	strstr += " from "+schema+"."+table+ " limit 100;"
-	print strstr
-		
+		if i % 3 == 0:
+			strstr += "\n"
+
+	print "select "+ strstr + " from "+schema+"."+table+" limit 100;\n"
+
+	if len(sys.argv) > 3:
+		sql_str = "select "+ strstr + " from "+schema+"."+table + " where "+ sys.argv[3]
+		cursor.execute(sql_str)
+		results = cursor.fetchall()
+		for row in results:
+			tmpstr=""
+			for i in range(len(row)):
+				if "char" in list[i][2]:
+					tmpstr += "'" + str(row[i]) + "'" 
+				else:
+					tmpstr += str(row[i])
+				if i != max_i:
+					tmpstr += ","
+				else:
+					pass
+				if i % 3 == 0:
+					tmpstr += "\n"
+			print  "insert into "+schema+"."+table+"("+ strstr+") \nvalues("+tmpstr+");"
+		#print len(results)
 
 def work_generate(schema,table,list):
 	generate_select(schema,table,list)
 	print "\n"
 	generate_insert(schema,table,list)
-	print "\n"
-	generate_update(schema,table,list)
-	print "\n"
-	generate_delete(schema,table,list)
 	print "\n"
 
 	#print list
