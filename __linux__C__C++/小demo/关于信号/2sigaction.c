@@ -1,7 +1,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <unistd.h>
 /*自定义信号处理函数*/
 void my_func(int sign_no)
 {

@@ -5,6 +5,7 @@ CC=g++
 3sigset=3sigset
 4sig=4sig
 5sig=5sig
+6sig=6sig
 
 
 
@@ -12,7 +13,7 @@ CC=g++
 #------------------------------------------------------------
 .PHONY: all clean
 
-all:    $(1signal)  $(2sigaction)  $(3sigset)   $(4sig)  $(5sig) 
+all:    $(1signal)  $(2sigaction)  $(3sigset)   $(4sig)  $(5sig) $(6sig) 
 
 $(1signal):1signal.c 
 	$(CC) -g -o  $(1signal) 1signal.c
@@ -24,10 +25,12 @@ $(4sig):4sig.c
 	$(CC) -g -o  $(4sig) 4sig.c
 $(5sig):5sig.cpp
 	$(CC) -g -o  $(5sig) 5sig.cpp
-
+$(6sig):6sig.cpp
+	$(CC) -g -o  $(6sig) 6sig.cpp -lpthread
 clean:
 	rm -rf $(1signal)
 	rm -rf $(2sigaction)
 	rm -rf $(3sigset)
 	rm -rf $(4sig)
 	rm -rf $(5sig)
+	rm -rf $(6sig)
