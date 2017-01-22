@@ -136,7 +136,7 @@ make install 这个会默认cp到/usr/local/bin ，手动把redis.conf拷贝过�
     cat /etc/group  查看用户组列表如果没有就创建
 
     groupadd mysql
-    useradd -g mysql mysql修改/usr/local/mysql权限
+    useradd -g mysql mysql 修改/usr/local/mysql权限
 
     chown -R mysql:mysql /usr/local/mysql修改/usr/local/mysql权限
 
@@ -159,8 +159,20 @@ mysql -uroot
 mysql> SET PASSWORD = PASSWORD('123456');  //密码就是123456
 
 
-------------------------------------------------------------------------------
-------------------------------------------------------------------------------
+--------------------tomcat7----------------------------------------------------------
+http://tomcat.apache.org/
+wget http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.73/bin/apache-tomcat-7.0.73.tar.gz
+tar
+mv
+bin/catalina.sh start
+
+
+--------------------redis----------------------------------------------------------
+wget http://download.redis.io/releases/redis-3.2.6.tar.gz
+tar xzf redis-3.2.6.tar.gz
+cd redis-3.2.6
+make
+拷贝主要的文件到特定目录
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------

@@ -287,7 +287,7 @@ typedef struct {
   dyad_Callback   callback;
   void            *udata;
 } Listener;
-
+ 
 
 struct dyad_Stream {
   int               state;

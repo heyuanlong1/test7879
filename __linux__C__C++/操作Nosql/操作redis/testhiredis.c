@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
 	redisContext *c;
 	redisReply *reply;
 
-	const char *hostname  = (argc > 1 ) ? argv[1] : "127.0.0.1";
+	const char *hostname  = (argc > 1 ) ? argv[1] : "192.168.65.76";
 	int port = (argc >2 ) ? atoi(argv[2]) :6379;
 
 	struct timeval timeout = {1,500000}; //1.5second
@@ -25,7 +25,7 @@ int main(int argc, char const *argv[])
 		exit(1);
 	}
 
-	reply = redisCommand(c,"auth ******");
+	reply = redisCommand(c,"auth FDFDfdi4k25e@sf");
 	if (reply->type == REDIS_REPLY_ERROR){
 		printf("Error: %s\n", reply->str);
 	}

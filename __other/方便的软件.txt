@@ -5,3 +5,4 @@ Sublime Text3
 Atom
 Notepad++
 EditPlus
+beyond compare
