@@ -4,7 +4,7 @@
 
 3.无规则的日志是没什么鸟用的。
 
-
+4.重要数据的变化需要变化日志表。比如，user_product   user_product_log_YYYY_MM
 
 
 
