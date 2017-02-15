@@ -9,3 +9,16 @@ wget https://pypi.python.org/packages/a5/e9/51b544da85a36a68debe7a7091f068d802fc
 python setup.py install
 
 可能要  sudo ln -s /tmp/mysql.sock /var/lib/mysql/mysql.sock
+
+
+可能要{
+	wget http://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz
+	tar zxvf setuptools-0.6c11.tar.gz
+	cd setuptools-0.6c11
+	python setup.py build
+	python setup.py install
+
+	yum install mysql-devel
+	yum install python-devel
+
+}

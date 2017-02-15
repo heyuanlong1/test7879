@@ -1,3 +1,13 @@
+
+
+
+--------------------gcc  g++---------------------------------------------------------
+yum install gcc
+yum install gcc-c++
+
+yum install jemalloc
+yum install tcl
+
 --------------------openresty----------------------------------------------------------
 
 yum install readline-devel pcre-devel openssl-devel
