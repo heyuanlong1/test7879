@@ -15,7 +15,7 @@ wget https://openresty.org/download/openresty-1.11.2.1.tar.gz
 tar -xzvf openresty-VERSION.tar.gz
 cd openresty-VERSION/
 
-./configure --prefix=/usr/local/openresty \
+./configure --prefix=/apps/service/openresty \
             --with-luajit \
             --without-http_redis2_module \
             --with-http_iconv_module
@@ -169,13 +169,30 @@ mysql -uroot
 mysql> SET PASSWORD = PASSWORD('123456');  //密码就是123456
 
 
+--------------------rpm  安装jdk--------------------------------------------------------
+chmod 755 jdk-8u77-linux-x64.rpm
+rpm   -i  jdk-8u77-linux-x64.rpm
+
+可选{
+    vim /etc/profile
+        export JAVA_HOME=/usr/java/jdk1.8.0_77
+        export JAVA_JRE=/usr/java/jdk1.8.0_77/jre
+        export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+        export PATH=$PATH:$JAVA_HOME/bin
+    source /etc/profile
+}
 --------------------tomcat7----------------------------------------------------------
 http://tomcat.apache.org/
 wget http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.73/bin/apache-tomcat-7.0.73.tar.gz
-tar
-mv
+tar xzf apache-tomcat-7.0.73.tar.gz
+mv apache-tomcat-7.0.73 /usr/local/tomcat7
 bin/catalina.sh start
 
+可选{
+    CATALINA_BASE=/usr/local/tomcat7
+    CATALINE_HOME=/usr/local/tomcat7
+    export CATALINA_BASE CATALINA_HOME
+}
 
 --------------------redis----------------------------------------------------------
 wget http://download.redis.io/releases/redis-3.2.6.tar.gz

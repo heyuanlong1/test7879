@@ -67,5 +67,20 @@ int main(int argc, char const *argv[])
 
     cout<<"map size:"<<mymap.size()<<endl;    //元素数量
 	showmap(mymap); 
+
+    i = mymap.begin();
+    for (;i != mymap.end() ;)
+    {
+        if (i->second == "3333")
+        {
+            mymap.erase(i++);
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    showmap(mymap); 
+
 	return 0;
 }
