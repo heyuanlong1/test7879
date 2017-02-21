@@ -146,12 +146,11 @@ make install 这个会默认cp到/usr/local/bin ，手动把redis.conf拷贝过�
     cat /etc/group  查看用户组列表如果没有就创建
 
     groupadd mysql
-    useradd -g mysql mysql 修改/usr/local/mysql权限
-
-    chown -R mysql:mysql /usr/local/mysql修改/usr/local/mysql权限
+    useradd -g mysql mysql                  修改/usr/local/mysql权限
+    chown -R mysql:mysql /usr/local/mysql   修改/usr/local/mysql权限
 
     cd /usr/local/mysql
-    scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/mysql/data --user=mysql
+    ./scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/mysql/data --user=mysql
 
 
 cp support-files/mysql.server /etc/init.d/mysql

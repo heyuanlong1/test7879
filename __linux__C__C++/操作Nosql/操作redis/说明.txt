@@ -19,6 +19,10 @@ export LD_LIBRARY_PATH=/usr/local/lib
 /usr/local/lib
 /usr/local/lib64
 
+ln  源目标  目的目标
+ln  -sf /usr/local/lib/libhiredis.so.0.13 /lib64/libhiredis.so.0.1
+ln -sf /usr/lib64/mysql/libmysqlclient.so /lib64/libmysqlclient.so.16
+
 编译静态库
 cr标志告诉ar将object文件封装(archive),我们可以使用nm -s 命令来查看.a文件的内容
 ar -cr libmyhello.a hello.o （或-cvr ）
