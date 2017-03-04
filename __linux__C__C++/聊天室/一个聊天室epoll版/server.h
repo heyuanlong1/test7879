@@ -17,7 +17,7 @@
 #include <sys/epoll.h>
 #include <list>
 
-int socketinit(int port);
+int socketinit(char *ip,int port);
 int sendMsg(std::list<int> *li,int originFd,char *msg,int msgLen);
 
 int addList(std::list<int> *li,int fd);
