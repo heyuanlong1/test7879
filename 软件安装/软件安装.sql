@@ -146,12 +146,11 @@ make install 这个会默认cp到/usr/local/bin ，手动把redis.conf拷贝过�
     cat /etc/group  查看用户组列表如果没有就创建
 
     groupadd mysql
-    useradd -g mysql mysql 修改/usr/local/mysql权限
-
-    chown -R mysql:mysql /usr/local/mysql修改/usr/local/mysql权限
+    useradd -g mysql mysql                  修改/usr/local/mysql权限
+    chown -R mysql:mysql /usr/local/mysql   修改/usr/local/mysql权限
 
     cd /usr/local/mysql
-    scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/mysql/data --user=mysql
+    ./scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/mysql/data --user=mysql
 
 
 cp support-files/mysql.server /etc/init.d/mysql
@@ -200,7 +199,19 @@ tar xzf redis-3.2.6.tar.gz
 cd redis-3.2.6
 make
 拷贝主要的文件到特定目录
-------------------------------------------------------------------------------
+---------------------golang---------------------------------------------------------
+为了构建 Go 1.x （x ≥ 5），需要先安装 Go 1.4 到 $GOROOT_BOOTSTRAP.（因为Go 1.5以后 将使用 Go 1.4 进行构建，）
+第一步：先下载1.4源码和1.7源码
+第二步：cd到go1.4/src里，执行.all.bash...........安装完毕
+第三步：export GOROOT_BOOTSTRAP=...go1.4
+第四步：cd到go1.7/src里，执行.all.bash...........安装完毕
+第五步：设置go1.7的环境
+{
+export GOROOT=/usr/local/go
+export PATH=$PATH:$GOROOT/bin
+export GOARCH=amd64
+export GOOS=linux
+}
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
