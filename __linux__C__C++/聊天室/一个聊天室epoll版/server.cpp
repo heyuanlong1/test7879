@@ -8,19 +8,22 @@
 int main(int argc, char const *argv[])
 {
 
+	char ip[32] = {0};
 	int port;
 	char buf[MAXBUF];
 	int online = 0;
 	std::list<int> fdList;
 	int serversock = -1;
 
-	if (argc < 2){
+	if (argc < 3){
 		printf("arg is too less\n");
 		return 0;
 	}
 
-	port=atoi(argv[1]);
-	serversock=socketinit(port);
+	strcpy(ip,argv[1]);
+	port  = atoi(argv[2]);
+
+	serversock=socketinit(ip,port);
 	if (serversock == -1)
 	{
 		perror("socketinit");
@@ -137,7 +140,7 @@ int removeList(std::list<int> *li,int fd)
 	return 0;
 }
 
-int socketinit(int port)
+int socketinit(char *ip,int port)
 {
 	int tempSock = socket(AF_INET,SOCK_STREAM,0);
 	if(tempSock == -1){
@@ -148,7 +151,7 @@ int socketinit(int port)
 	bzero(&serverAddr,sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = htons(port);
-	serverAddr.sin_addr.s_addr  = htonl(INADDR_ANY);
+	serverAddr.sin_addr.s_addr  =  inet_addr(ip);
 
 	if(bind(tempSock,(struct sockaddr *)&serverAddr,sizeof(struct sockaddr)) == -1){
 		perror("bind");
