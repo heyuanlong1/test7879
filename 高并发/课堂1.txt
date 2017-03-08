@@ -1,0 +1,26 @@
+查看服务器的主机类型
+dmidecode | grep "Product Name"
+
+查看cpu规格
+cat /proc/cpuinfo | grep name
+
+查看核数量
+cat /proc/cpuinfo | grep physical | grep -v address | uniq -c
+
+查看内存信息
+cat /proc/meminfo
+
+查看操作系统
+lsb_release -a
+
+查看内核版本
+uname -a
+
+
+
+1. 提高文件数目上限
+	ulimit -a
+	vim /etc/security/limits.conf
+	重新登录并确认修改生效
+2. TCP/IP 的优化
+查看 https://github.com/xiaojiaqi/C1000kPracticeGuide
