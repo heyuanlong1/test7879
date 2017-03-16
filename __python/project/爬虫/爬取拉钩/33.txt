@@ -1,0 +1,12 @@
+https://www.lagou.com/jobs/list_c++?px=default&gj=3年及以下&city=深圳#
+https://www.lagou.com/jobs/list_c++?px=default&gj=3-5年&city=深圳#
+https://www.lagou.com/jobs/list_c++?px=default&gj=5-10年&city=深圳#
+https://www.lagou.com/jobs/list_go?px=default&gj=3年及以下&city=深圳#
+https://www.lagou.com/jobs/list_go?px=default&gj=3-5年&city=深圳#
+https://www.lagou.com/jobs/list_go?px=default&gj=5-10年&city=深圳#
+https://www.lagou.com/jobs/list_python?px=default&gj=3年及以下&city=深圳#
+https://www.lagou.com/jobs/list_python?px=default&gj=3-5年&city=深圳#
+https://www.lagou.com/jobs/list_python?px=default&gj=5-10年&city=深圳#
+https://www.lagou.com/jobs/list_java?px=default&gj=3年及以下&city=深圳#
+https://www.lagou.com/jobs/list_java?px=default&gj=3-5年&city=深圳#
+https://www.lagou.com/jobs/list_java?px=default&gj=5-10年&city=深圳#
