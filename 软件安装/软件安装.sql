@@ -100,6 +100,9 @@ Thanks for using MySQL!
 Cleaning up...
 
 
+约定root可外部链接，密码为aihx5dfgEokjgr
+Grant all privileges on *.* to 'root'@'%' identified by '123456' with grant option;
+flush privileges;
 --------------------redis----------------------------------------------------------
 
 $ wget http://download.redis.io/releases/redis-3.2.4.tar.gz
@@ -167,7 +170,9 @@ source /etc/profile
 mysql -uroot  
 mysql> SET PASSWORD = PASSWORD('123456');  //密码就是123456
 
-
+约定root可外部链接，密码为aihx5dfgEokjgr
+Grant all privileges on *.* to 'root'@'%' identified by '123456' with grant option;
+flush privileges;
 --------------------rpm  安装jdk--------------------------------------------------------
 chmod 755 jdk-8u77-linux-x64.rpm
 rpm   -i  jdk-8u77-linux-x64.rpm
@@ -217,7 +222,20 @@ yum install lrzsz -y
 rz
 sz filename
 
-------------------------------------------------------------------------------
+---------------------httpd php---------------------------------------------------------
+yum install httpd
+chkconfig --levels 235 httpd on
+
+yum install php php-mysql php-gd php-imap php-ldap php-odbc php-pear php-xml php-xmlrpc
+vi /var/www/html/info.php
+<?php
+phpinfo();
+?>
+vi /etc/httpd/conf/httpd.conf
+ServerName ip:80
+
+service httpd restart
+
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
