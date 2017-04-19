@@ -15,7 +15,7 @@ wget https://openresty.org/download/openresty-1.11.2.1.tar.gz
 tar -xzvf openresty-VERSION.tar.gz
 cd openresty-VERSION/
 
-./configure --prefix=/apps/service/openresty \
+./configure --prefix=/data/testnginx/openresty \
             --with-luajit \
             --without-http_redis2_module \
             --with-http_iconv_module
