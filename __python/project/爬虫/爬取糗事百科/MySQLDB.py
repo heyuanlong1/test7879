@@ -7,9 +7,9 @@ import MySQLdb
 import time, os, sched 
 
 ##全局定义
-MYSQL_HOST		='****'
-MYSQL_PORT		=***
-MYSQL_USER		='****'
+MYSQL_HOST		='localhost'
+MYSQL_PORT		=3306
+MYSQL_USER		='root'
 MYSQL_PASSWORD	='*********'
 
 
@@ -32,7 +32,7 @@ class RankDB:
 
 	def initSql(self):
 		try:
-			self.sql_connect=MySQLdb.connect(host=MYSQL_HOST,port=MYSQL_PORT,user=MYSQL_USER,passwd=MYSQL_PASSWORD) 
+			self.sql_connect=MySQLdb.connect(host=MYSQL_HOST,port=MYSQL_PORT,user=MYSQL_USER,passwd=MYSQL_PASSWORD)
 			self.sql_connect.autocommit(1);
 			self.cursor = self.sql_connect.cursor() 
 		except Exception,e:
