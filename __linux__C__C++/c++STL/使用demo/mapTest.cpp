@@ -38,6 +38,7 @@ int main(int argc, char const *argv[])
     showmap(mymap); 
 
     mymap[33] = "3333";
+    mymap[34] = "3333";
     cout<<"mymap[3] = 5 -> "<<mymap.at(33)<<endl;
 
     mymap.erase(++mymap.begin());         		//删除 map的iterator没有 +1 运算
@@ -68,8 +69,8 @@ int main(int argc, char const *argv[])
     cout<<"map size:"<<mymap.size()<<endl;    //元素数量
 	showmap(mymap); 
 
-    i = mymap.begin();
-    for (;i != mymap.end() ;)
+    //for循环里删除
+    for (map<int,string>::iterator i= mymap.begin();i != mymap.end() ;)
     {
         if (i->second == "3333")
         {

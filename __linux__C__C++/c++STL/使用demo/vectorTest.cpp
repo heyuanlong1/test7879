@@ -27,6 +27,9 @@ int main(int argc, char const *argv[])
                                     //从后面向myvector容器中添加数据   
     myvector.push_back (4);   
     myvector.push_back (3);   
+    myvector.push_back (3);   
+    myvector.push_back (3);   
+    myvector.push_back (3);   
     myvector.push_back (2);   
     myvector.push_back (1);   
       
@@ -71,5 +74,15 @@ int main(int argc, char const *argv[])
 
     cout<<"vector size:"<<myvector.size()<<endl;    //元素数量
 	showvector(myvector); 
+
+    //for循环删除元素
+    for(vector<int>::iterator iter=myvector.begin(); iter!=myvector.end(); )
+    {
+         if( *iter == 3)
+              iter = myvector.erase(iter);
+          else
+                iter ++ ;
+    }
+    showvector(myvector); 
 	return 0;
 }
