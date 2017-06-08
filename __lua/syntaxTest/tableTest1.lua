@@ -184,6 +184,10 @@ for _,v in pairs(t) do
 	end
 end
 
+t["key1"].person1.age = 45
+print(t.key1.person1.age)
+print(t["key1"].person1["age"])
+
 print("-----------------------------------------------------------建议list和table不要混合使用")
 
 
