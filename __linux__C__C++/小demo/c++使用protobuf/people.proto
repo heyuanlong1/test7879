@@ -1,0 +1,15 @@
+package demo;  
+  
+message workClass {
+	required int32 id = 1;
+	required string name = 2;	
+}
+
+message People {  
+  required string name = 1;  
+  required int32 id = 2;  
+  required string email = 3;  
+  optional int32 num = 4;
+  repeated int32 renum = 5;
+  repeated workClass work = 6;
+}  

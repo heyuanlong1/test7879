@@ -1,0 +1,11 @@
+﻿扩展 http://www.cnblogs.com/ghost240/archive/2012/07/04/2577054.html
+
+
+protoc --cpp_out=. people.proto 
+
+g++ server.cc people.pb.cc -o s -lprotobuf  
+g++ client.cc people.pb.cc -o c -lprotobuf  
+
+
+./s
+./c "GET PEOPLE" 
