@@ -33,6 +33,7 @@ void lookTime();
 int main(int argc, char const *argv[])
 {
 	test_struct_t *u;
+	int i = 0;
 	v_rbtree_init(&test_rbtree, &v_sentinel,v_rbtree_insert_value);
 	v_rbtree_init(&v_cln_timer_rbtree, &v_cln_timer_sentinel,v_rbtree_insert_timer_value);
 	insert();
@@ -91,6 +92,7 @@ test_struct_t* look1()
 void del1(test_struct_t* u)
 {
 	v_rbtree_delete(&test_rbtree, &u->node);
+	free(u);
 }
 
 void insertTime()
@@ -122,6 +124,8 @@ void insertTime()
 void lookTime()
 {
 	v_rbtree_node_t      *node, *root, *sentinel;
+	test_struct_time_t *t;
+
 	sentinel = v_cln_timer_rbtree.sentinel;
 	for ( ;; ){
 		root = v_cln_timer_rbtree.root;
@@ -131,6 +135,8 @@ void lookTime()
 		node = v_rbtree_min(root, sentinel);
 		printf("%d %d\n",node->key.v,node->key.v2 );
 		v_rbtree_delete(&v_cln_timer_rbtree, node);
+		t = (test_struct_time_t*)node;
+		free(t);
 	}
 	return;
 }
