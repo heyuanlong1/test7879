@@ -99,7 +99,8 @@ local t = {}
 t.key={a=1,b=2}
 t.key2=2
 t.key3='dsfsdfsdfsdfdaaaaaaa"dddd"d'
-
+t.key4='a\n\n\\a'
+print(t.key4)
 local str1 = utils.serialize(t)
 local str2 = utils.dumpObj(t)
 print(str1)
