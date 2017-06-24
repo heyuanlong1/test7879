@@ -1,0 +1,12 @@
+zookeeper C API   http://www.cnblogs.com/haippy/archive/2013/02/21/2920280.html
+
+zookeeper 原理 http://blog.csdn.net/tswisdom/article/details/41522069
+
+
+
+./zktest1 创建一个临时节点，接着又把它删除了。
+
+
+
+./queryServerd 	监控/QueryServer节点的变化。
+./queryServer	创建/QueryServer临时节点，当./queryServer退出时，会话结束，临时节点也会被自动删除。
