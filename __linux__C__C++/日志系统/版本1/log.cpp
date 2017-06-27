@@ -38,10 +38,11 @@ int 	writeline(int level, const char* format_str, ...)
 	
 	if (m_log_level < level) return 0;
 	
-	lock();
+	
 	if (m_fp == NULL){
 		return -1;
 	}
+	lock();
 	if (ftell(m_fp) >= m_log_size)
     {
         rotate_log();//切换日志写入
