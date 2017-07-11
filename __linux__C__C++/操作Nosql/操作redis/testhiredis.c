@@ -29,6 +29,7 @@ int main(int argc, char const *argv[])
 	if (reply->type == REDIS_REPLY_ERROR){
 		printf("Error: %s\n", reply->str);
 	}
+	freeReplyObject(reply);
 
 	reply = redisCommand(c,"ping");
 	if (reply->type == REDIS_REPLY_ERROR){
