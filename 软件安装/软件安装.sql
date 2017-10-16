@@ -8,6 +8,18 @@ yum install gcc-c++
 yum install jemalloc
 yum install tcl
 
+--------------------gcc  g++   升级-------------------------------------------------------
+https://www.cppfans.org/1719.html
+
+1.下载gcc最新的源码包 wget http://gcc.skazkaforyou.com/releases/gcc-4.9.1/gcc-4.9.1.tar.gz
+2.解压缩 tar -xf gcc-4.9.1.tar.gz
+3. cd gcc-4.9.1
+4.运行download_prerequisites脚本， ./contrib/download_prerequisites ，这个脚本会自动帮你下载所需要的依赖文件和库
+5.建立输出目录，将所有的中间文件都放到该目录，
+mkdir gcc_temp
+cd gcc_temp
+6. 运行 ../configure --enable-checking=release --enable-languages=c,c++ --disable-multilib
+7. make & make install
 --------------------openresty----------------------------------------------------------
 
 yum install readline-devel pcre-devel openssl-devel
