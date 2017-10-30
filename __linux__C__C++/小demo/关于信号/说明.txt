@@ -58,7 +58,10 @@ man 7 signal查看信号的一些说明
 
 
 
+sigpending 函数:int sigpending(sigset_t *set);
+功能：返回在阻塞期间接收到阻塞信号的集合。
 
+大部分系统不对信号排队。
 
 
 
