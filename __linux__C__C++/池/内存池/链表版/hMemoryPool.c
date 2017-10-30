@@ -143,7 +143,7 @@ int freeHMemory(void *p)
 	int res;
 	int searchRes;
 	int headSize = sizeof(blockHead);
-	blockHead *temp = (blockHead *)(p - headSize);
+	blockHead *temp = (blockHead *)(p - headSize);		//
 	int size = temp->size;
 	char tempInPool = temp->inPool;
 	if (tempInPool == '0'){		//不在池里的
