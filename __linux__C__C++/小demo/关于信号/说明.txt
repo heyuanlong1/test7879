@@ -56,12 +56,23 @@ man 7 signal查看信号的一些说明
 	见6sig.cpp
 
 
+大部分系统不对信号排队。
 
-
-sigpending 函数:int sigpending(sigset_t *set);
+sigpending 函数:
+int sigpending(sigset_t *set);
 功能：返回在阻塞期间接收到阻塞信号的集合。
 
-大部分系统不对信号排队。
+
+sigsuspend 函数：
+int sigsuspend(const sigset_t *mask);
+功能：
+	sigsuspend()  temporarily  replaces  the  signal  mask of the calling process with the mask 
+	given by mask and then suspends the process until delivery of a signal whose action  is  to
+	invoke a signal handler or to terminate a process.
+
+	If  the signal terminates the process, then sigsuspend() does not return.  If the signal is
+	caught, then sigsuspend() returns after the signal handler returns, and the signal mask  is
+	restored to the state before the call to sigsuspend().
 
 
 

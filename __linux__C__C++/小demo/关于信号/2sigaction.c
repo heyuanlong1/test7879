@@ -11,6 +11,8 @@ void my_func(int sign_no)
   		printf("I have get SIGQUIT\n");
   	else
 		printf("????\n");
+	
+	sleep(1);
 }
 void my_func2(int sign_no)
 {
@@ -20,6 +22,8 @@ void my_func2(int sign_no)
   		printf("I have get SIGQUIT\n");
   	else
 		printf("SIGTSTP\n");
+	
+	sleep(1);
 }
 
 
@@ -32,23 +36,44 @@ int main()
 	action.sa_handler = my_func;
 	sigemptyset(&action.sa_mask);//清空信号集
 	sigaddset(&action.sa_mask, SIGQUIT);
-	//sa_mask，信号屏蔽集，可以通过函数sigemptyset/sigaddset等来清空和增加需要屏蔽的信号，上面代码中，对信号SIGINT处理时，如果来信号SIGQUIT，其将被屏蔽，但是如果在处理SIGQUIT，来了SIGINT，则首先处理SIGINT，然后接着处理SIGQUIT。
 	action.sa_flags = 0;
+	sigaction(SIGINT, &action, 0);
+	//sa_mask，信号屏蔽集，可以通过函数sigemptyset/sigaddset等来清空和增加需要屏蔽的信号，上面代码中，对信号SIGINT处理时，如果来信号SIGQUIT，其将被屏蔽，但是如果在处理SIGQUIT，来了SIGINT，则首先处理SIGINT，然后接着处理SIGQUIT。
 	
-	/* 如果发出相应的信号，并跳转到信号处理函数处 */
-	sigaction(SIGINT, &action, 0);//,设置信号相对应的函数
+	//当发生SIGINT信号时，系统会暂时屏蔽SIGQUIT，或者暂定SIGQUIT的信号处理函数。
+
 
 
 	action2.sa_handler = my_func2;
 	sigemptyset(&action2.sa_mask);//不屏蔽任何信号
 	action2.sa_flags = 0;
-
 	sigaction(SIGQUIT, &action2, 0);//,设置信号相对应的函数
-	sigaction(SIGTSTP, &action2, 0);//,设置信号相对应的函数
 
-	//raise(SIGINT);//也可以使用ctrl + c 触发信号
-	//raise(SIGQUIT);//也可以使用ctrl + \ 触发此信号
-	//raise(SIGTSTP);//也可以使用ctrl + z 触发此信号
+	/* 
+		假定系统连续收到下面2个信号
+		
+		有sigaddset(&action.sa_mask, SIGQUIT);
+		输入
+			kill -2 8204
+			kill -3 8204
+		输出
+			I have get SIGINT
+			等待2秒
+			I have get SIGQUIT
+
+		输入
+			kill -3 8204
+			kill -2 8204
+		输出
+			I have get SIGINT
+			等待2秒
+			I have get SIGQUIT
+			
+		
+
+	*/
+
+	
 	while(1)  
     {  
          sleep(1);  
