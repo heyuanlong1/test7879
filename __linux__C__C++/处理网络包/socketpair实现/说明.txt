@@ -1,0 +1,25 @@
+http://www.cnblogs.com/big-xuyue/p/4098578.html
+
+
+一般的网络程序，服务器端的socket在收到一个新连接，总是会派生出一个socket与客户端通信。但是如果没有accept，会发生什么情况？
+
+1.可以连接上去，个数是监听队列listen里设置的个数，调用了accept，监听队列就能再多监听一个客户端连接了.
+
+2.
+int listen(int sockfd, int backlog);
+不用accept 最大的监听个数就是这个backlog了
+因为一直没有accept，所以这个里的队列会一直在，不会减少
+虽然这个backlog是可以手动设置的，但是linux是最大值128
+如果超过这个数目了，就是无效的，最大也就128.
+
+3.
+在被动状态的socket有两个队列，一个是正在进行三次握手的socket队列，一个是完成三次握手的socket队列。在握手完成后会从正在握手队列移到握手完成的队列，此时已经建立连接。accept就是从已经完成三次握手的socket队列里面取，不accept客户端能完成的连接就是此队列的大小.
+
+
+
+
+
+
+getsockname可以获得一个与socket相关的地址，服务器端可以通过它得到相关客户端地址，而客户端也可以得到当前已连接成功的socket的ip和端口。
+int getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+returns  the current address to which the socket sockfd is bound, in the buffer pointed to by addr.  The addrlen argument should be initialized to indicate the amount of space (in bytes) pointed to by addr.  On return it contains the actual size of the socket address.
