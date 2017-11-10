@@ -72,7 +72,7 @@ int ko_log_set_level(int level)
 
 int ko_log_set_path( const char* path )
 {
-	stpcpy(path_str,path);
+	strcpy(path_str,path);
 	path_len = strlen(path_str);
 	
 	if( ko_log_turn_sys() ){

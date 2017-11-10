@@ -1,12 +1,40 @@
 #include "MsConfig.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 #define MS_CONF_FILE_PATH "./ko.conf"
-#define MS_CONF_LOAD_FAIL						10001		//
-#define MS_OK									0
-#define MS_FAIL									-1
+#define MS_CONF_LOAD_FAIL						-10001		//
+
+#define  VS_OK          0
+#define  VS_ERROR      -1
+
+
+#define LINE_LEN_BUF 100
+
+int len;
+char array[LINE_LEN_BUF*2][64];
+
+
+void strTrim(char *str);
+int find_first_not_of(char *str,int str_len,const char *sub,int sub_len);
+int find_last_not_of(char *str,int str_len,const char *sub,int sub_len);
+
+
+int config_get_key_value(const char *key, char *value)
+{
+	int i = 0;
+	for (; i < len; )
+	{	
+		if (strcmp(key,array[i]) == 0){
+			strcpy(value,array[i + 1]);
+			return VS_OK;
+		}
+		i += 2; 
+	}
+	return VS_ERROR;
+}
 
 
 int load()
@@ -24,7 +52,6 @@ int load()
 
 	if ((fp = fopen(f,"r")) == NULL){
 		printf("File cannot be opened/n");  
-		fclose(fp);
     	return MS_CONF_LOAD_FAIL;
 	}
 
@@ -47,12 +74,14 @@ int load()
 			strTrim(k);
 			strTrim(v);
 			if (strlen(k) != 0){
-				printf("%s=%s\n",k,v);
+				//printf("%s=%s\n",k,v);
+				strcpy(array[len++],k);
+				strcpy(array[len++],v);
 			}
 		}
 	}
 	fclose(fp);
-	return 0;
+	return VS_OK;
 }
 
 
