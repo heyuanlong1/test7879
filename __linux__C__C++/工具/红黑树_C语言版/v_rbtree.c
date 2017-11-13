@@ -5,29 +5,29 @@
 #include "v_rbtree.h"
 
 
-static v_inline void v_rbtree_left_rotate(v_rbtree_node_t **root,
-    v_rbtree_node_t *sentinel, v_rbtree_node_t *node);
-static v_inline void v_rbtree_right_rotate(v_rbtree_node_t **root,
-    v_rbtree_node_t *sentinel, v_rbtree_node_t *node);
+static vs_inline void vs_rbtree_left_rotate(vs_rbtree_node_t **root,
+    vs_rbtree_node_t *sentinel, vs_rbtree_node_t *node);
+static vs_inline void vs_rbtree_right_rotate(vs_rbtree_node_t **root,
+    vs_rbtree_node_t *sentinel, vs_rbtree_node_t *node);
 
 
 
 void
-v_rbtree_insert(v_thread_volatile v_rbtree_t *tree,
-    v_rbtree_node_t *node)
+vs_rbtree_insert(vs_thread_volatile vs_rbtree_t *tree,
+    vs_rbtree_node_t *node)
 {
-    v_rbtree_node_t  **root, *temp, *sentinel;
+    vs_rbtree_node_t  **root, *temp, *sentinel;
 
     /* a binary tree insert */
 
-    root = (v_rbtree_node_t **) &tree->root;
+    root = (vs_rbtree_node_t **) &tree->root;
     sentinel = tree->sentinel;
 
     if (*root == sentinel) {
         node->parent = NULL;
         node->left = sentinel;
         node->right = sentinel;
-        v_rbt_black(node);
+        vs_rbt_black(node);
         *root = node;
 
         return;
@@ -37,60 +37,60 @@ v_rbtree_insert(v_thread_volatile v_rbtree_t *tree,
 
     /* re-balance tree */
 
-    while (node != *root && v_rbt_is_red(node->parent)) {
+    while (node != *root && vs_rbt_is_red(node->parent)) {
 
         if (node->parent == node->parent->parent->left) {
             temp = node->parent->parent->right;
 
-            if (v_rbt_is_red(temp)) {
-                v_rbt_black(node->parent);
-                v_rbt_black(temp);
-                v_rbt_red(node->parent->parent);
+            if (vs_rbt_is_red(temp)) {
+                vs_rbt_black(node->parent);
+                vs_rbt_black(temp);
+                vs_rbt_red(node->parent->parent);
                 node = node->parent->parent;
 
             } else {
                 if (node == node->parent->right) {
                     node = node->parent;
-                    v_rbtree_left_rotate(root, sentinel, node);
+                    vs_rbtree_left_rotate(root, sentinel, node);
                 }
 
-                v_rbt_black(node->parent);
-                v_rbt_red(node->parent->parent);
-                v_rbtree_right_rotate(root, sentinel, node->parent->parent);
+                vs_rbt_black(node->parent);
+                vs_rbt_red(node->parent->parent);
+                vs_rbtree_right_rotate(root, sentinel, node->parent->parent);
             }
 
         } else {
             temp = node->parent->parent->left;
 
-            if (v_rbt_is_red(temp)) {
-                v_rbt_black(node->parent);
-                v_rbt_black(temp);
-                v_rbt_red(node->parent->parent);
+            if (vs_rbt_is_red(temp)) {
+                vs_rbt_black(node->parent);
+                vs_rbt_black(temp);
+                vs_rbt_red(node->parent->parent);
                 node = node->parent->parent;
 
             } else {
                 if (node == node->parent->left) {
                     node = node->parent;
-                    v_rbtree_right_rotate(root, sentinel, node);
+                    vs_rbtree_right_rotate(root, sentinel, node);
                 }
 
-                v_rbt_black(node->parent);
-                v_rbt_red(node->parent->parent);
-                v_rbtree_left_rotate(root, sentinel, node->parent->parent);
+                vs_rbt_black(node->parent);
+                vs_rbt_red(node->parent->parent);
+                vs_rbtree_left_rotate(root, sentinel, node->parent->parent);
             }
         }
     }
 
-    v_rbt_black(*root);
+    vs_rbt_black(*root);
 }
 
 
 
 void
-v_rbtree_insert_value(v_rbtree_node_t *temp, v_rbtree_node_t *node,
-    v_rbtree_node_t *sentinel)
+vs_rbtree_insert_value(vs_rbtree_node_t *temp, vs_rbtree_node_t *node,
+    vs_rbtree_node_t *sentinel)
 {
-    v_rbtree_node_t  **p;
+    vs_rbtree_node_t  **p;
 
     for ( ;; ) {
 
@@ -115,15 +115,15 @@ v_rbtree_insert_value(v_rbtree_node_t *temp, v_rbtree_node_t *node,
     node->parent = temp;
     node->left = sentinel;
     node->right = sentinel;
-    v_rbt_red(node);
+    vs_rbt_red(node);
 }
 
 
 void
-v_rbtree_insert_timer_value(v_rbtree_node_t *temp, v_rbtree_node_t *node,
-    v_rbtree_node_t *sentinel)
+vs_rbtree_insert_timer_value(vs_rbtree_node_t *temp, vs_rbtree_node_t *node,
+    vs_rbtree_node_t *sentinel)
 {
-    v_rbtree_node_t  **p;
+    vs_rbtree_node_t  **p;
 
     for ( ;; ) {
 
@@ -156,13 +156,13 @@ v_rbtree_insert_timer_value(v_rbtree_node_t *temp, v_rbtree_node_t *node,
     node->parent = temp;
     node->left = sentinel;
     node->right = sentinel;
-    v_rbt_red(node);
+    vs_rbt_red(node);
 }
 
-int v_rbtree_get(v_thread_volatile v_rbtree_t *tree, v_rbtree_key_t  key,
-	v_rbtree_node_t *sentinel, v_rbtree_node_t **node)
+int vs_rbtree_get(vs_thread_volatile vs_rbtree_t *tree, vs_rbtree_key_t  key,
+	vs_rbtree_node_t *sentinel, vs_rbtree_node_t **node)
 {
-	v_rbtree_node_t			*nn, *parent;
+	vs_rbtree_node_t			*nn, *parent;
 	int							 value;
 
 	nn = tree->root;
@@ -177,7 +177,7 @@ int v_rbtree_get(v_thread_volatile v_rbtree_t *tree, v_rbtree_key_t  key,
             }
             else if (value == 0) {
                 *node = nn;
-                return v_OK;
+                return vs_OK;
             }
             else {
                 nn = nn->right;
@@ -198,26 +198,26 @@ int v_rbtree_get(v_thread_volatile v_rbtree_t *tree, v_rbtree_key_t  key,
             }
             else {
                 *node = nn;
-                return v_OK;
+                return vs_OK;
             }
         }
 
        
 	}
 
-	return v_ERROR;
+	return vs_ERROR;
 }
 
 void
-v_rbtree_delete(v_thread_volatile v_rbtree_t *tree,
-    v_rbtree_node_t *node)
+vs_rbtree_delete(vs_thread_volatile vs_rbtree_t *tree,
+    vs_rbtree_node_t *node)
 {
     unsigned int         red;
-    v_rbtree_node_t  **root, *sentinel, *subst, *temp, *w;
+    vs_rbtree_node_t  **root, *sentinel, *subst, *temp, *w;
 
     /* a binary tree delete */
 
-    root = (v_rbtree_node_t **) &tree->root;
+    root = (vs_rbtree_node_t **) &tree->root;
     sentinel = tree->sentinel;
 
     if (node->left == sentinel) {
@@ -229,7 +229,7 @@ v_rbtree_delete(v_thread_volatile v_rbtree_t *tree,
         subst = node;
 
     } else {
-        subst = v_rbtree_min(node->right, sentinel);
+        subst = vs_rbtree_min(node->right, sentinel);
 
         if (subst->left != sentinel) {
             temp = subst->left;
@@ -240,7 +240,7 @@ v_rbtree_delete(v_thread_volatile v_rbtree_t *tree,
 
     if (subst == *root) {
         *root = temp;
-        v_rbt_black(temp);
+        vs_rbt_black(temp);
 
         /* DEBUG stuff */
         node->left = NULL;
@@ -252,7 +252,7 @@ v_rbtree_delete(v_thread_volatile v_rbtree_t *tree,
         return;
     }
 
-    red = v_rbt_is_red(subst);
+    red = vs_rbt_is_red(subst);
 
     if (subst == subst->parent->left) {
         subst->parent->left = temp;
@@ -277,7 +277,7 @@ v_rbtree_delete(v_thread_volatile v_rbtree_t *tree,
         subst->left = node->left;
         subst->right = node->right;
         subst->parent = node->parent;
-        v_rbt_copy_color(subst, node);
+        vs_rbt_copy_color(subst, node);
 
         if (node == *root) {
             *root = subst;
@@ -312,77 +312,77 @@ v_rbtree_delete(v_thread_volatile v_rbtree_t *tree,
 
     /* a delete fixup */
 
-    while (temp != *root && v_rbt_is_black(temp)) {
+    while (temp != *root && vs_rbt_is_black(temp)) {
 
         if (temp == temp->parent->left) {
             w = temp->parent->right;
 
-            if (v_rbt_is_red(w)) {
-                v_rbt_black(w);
-                v_rbt_red(temp->parent);
-                v_rbtree_left_rotate(root, sentinel, temp->parent);
+            if (vs_rbt_is_red(w)) {
+                vs_rbt_black(w);
+                vs_rbt_red(temp->parent);
+                vs_rbtree_left_rotate(root, sentinel, temp->parent);
                 w = temp->parent->right;
             }
 
-            if (v_rbt_is_black(w->left) && v_rbt_is_black(w->right)) {
-                v_rbt_red(w);
+            if (vs_rbt_is_black(w->left) && vs_rbt_is_black(w->right)) {
+                vs_rbt_red(w);
                 temp = temp->parent;
 
             } else {
-                if (v_rbt_is_black(w->right)) {
-                    v_rbt_black(w->left);
-                    v_rbt_red(w);
-                    v_rbtree_right_rotate(root, sentinel, w);
+                if (vs_rbt_is_black(w->right)) {
+                    vs_rbt_black(w->left);
+                    vs_rbt_red(w);
+                    vs_rbtree_right_rotate(root, sentinel, w);
                     w = temp->parent->right;
                 }
 
-                v_rbt_copy_color(w, temp->parent);
-                v_rbt_black(temp->parent);
-                v_rbt_black(w->right);
-                v_rbtree_left_rotate(root, sentinel, temp->parent);
+                vs_rbt_copy_color(w, temp->parent);
+                vs_rbt_black(temp->parent);
+                vs_rbt_black(w->right);
+                vs_rbtree_left_rotate(root, sentinel, temp->parent);
                 temp = *root;
             }
 
         } else {
             w = temp->parent->left;
 
-            if (v_rbt_is_red(w)) {
-                v_rbt_black(w);
-                v_rbt_red(temp->parent);
-                v_rbtree_right_rotate(root, sentinel, temp->parent);
+            if (vs_rbt_is_red(w)) {
+                vs_rbt_black(w);
+                vs_rbt_red(temp->parent);
+                vs_rbtree_right_rotate(root, sentinel, temp->parent);
                 w = temp->parent->left;
             }
 
-            if (v_rbt_is_black(w->left) && v_rbt_is_black(w->right)) {
-                v_rbt_red(w);
+            if (vs_rbt_is_black(w->left) && vs_rbt_is_black(w->right)) {
+                vs_rbt_red(w);
                 temp = temp->parent;
 
             } else {
-                if (v_rbt_is_black(w->left)) {
-                    v_rbt_black(w->right);
-                    v_rbt_red(w);
-                    v_rbtree_left_rotate(root, sentinel, w);
+                if (vs_rbt_is_black(w->left)) {
+                    vs_rbt_black(w->right);
+                    vs_rbt_red(w);
+                    vs_rbtree_left_rotate(root, sentinel, w);
                     w = temp->parent->left;
                 }
 
-                v_rbt_copy_color(w, temp->parent);
-                v_rbt_black(temp->parent);
-                v_rbt_black(w->left);
-                v_rbtree_right_rotate(root, sentinel, temp->parent);
+                vs_rbt_copy_color(w, temp->parent);
+                vs_rbt_black(temp->parent);
+                vs_rbt_black(w->left);
+                vs_rbtree_right_rotate(root, sentinel, temp->parent);
                 temp = *root;
             }
         }
     }
 
-    v_rbt_black(temp);
+    vs_rbt_black(temp);
 }
 
 
-static v_inline void
-v_rbtree_left_rotate(v_rbtree_node_t **root, v_rbtree_node_t *sentinel,
-    v_rbtree_node_t *node)
+static vs_inline void
+vs_rbtree_left_rotate(vs_rbtree_node_t **root, vs_rbtree_node_t *sentinel,
+    vs_rbtree_node_t *node)
 {
-    v_rbtree_node_t  *temp;
+    vs_rbtree_node_t  *temp;
 
     temp = node->right;
     node->right = temp->left;
@@ -408,11 +408,11 @@ v_rbtree_left_rotate(v_rbtree_node_t **root, v_rbtree_node_t *sentinel,
 }
 
 
-static v_inline void
-v_rbtree_right_rotate(v_rbtree_node_t **root, v_rbtree_node_t *sentinel,
-    v_rbtree_node_t *node)
+static vs_inline void
+vs_rbtree_right_rotate(vs_rbtree_node_t **root, vs_rbtree_node_t *sentinel,
+    vs_rbtree_node_t *node)
 {
-    v_rbtree_node_t  *temp;
+    vs_rbtree_node_t  *temp;
 
     temp = node->left;
     node->left = temp->right;
