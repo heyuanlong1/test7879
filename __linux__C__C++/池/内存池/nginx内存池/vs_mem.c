@@ -8,9 +8,9 @@ int 	large_nums;
 
 
 
-static ngx_inline void *ngx_palloc_small(ngx_pool_t *pool, size_t size);
-static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);
-static void *ngx_palloc_large(ngx_pool_t *pool, size_t size);
+static ngx_inline void *ngx_palloc_small(ngx_pool_t *pool, size_t size);	//申请小块内存
+static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);				//看实现里的注释
+static void *ngx_palloc_large(ngx_pool_t *pool, size_t size);				//申请大块内存
 
 
 

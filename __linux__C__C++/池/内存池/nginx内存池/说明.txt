@@ -1,10 +1,6 @@
 
 
 
-
-blockHead *temp;
-void *res = (void*)(temp) + headSize;// 刚开始这里错了，写成void *res = (void*)(temp + headSize);我本想指针挪headSize位的却挪了sizeof(blockHead)*headSize位了。
-
-
-
-inPool 的值应该改为更加复杂
+https://www.cnblogs.com/magicsoar/p/6040238.html
+https://www.cnblogs.com/uestcjoel/p/6687785.html
+http://blog.csdn.net/cywosp/article/details/7044288

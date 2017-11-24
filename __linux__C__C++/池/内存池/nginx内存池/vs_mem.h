@@ -62,19 +62,19 @@ struct ngx_pool_s {
 extern int 	block_nums;
 extern int 	large_nums;
 
-void *ngx_alloc(size_t size);				//向系统分配内存
-void *ngx_calloc(size_t size);				//向系统分配内存
+void *ngx_alloc(size_t size);					//向系统分配内存
+void *ngx_calloc(size_t size);					//向系统分配内存
 
 
-ngx_pool_t *ngx_create_pool(size_t size);
-void ngx_destroy_pool(ngx_pool_t *pool);
-void ngx_reset_pool(ngx_pool_t *pool);
+ngx_pool_t *ngx_create_pool(size_t size);			//创建pool
+void ngx_destroy_pool(ngx_pool_t *pool);			//销毁pool
+void ngx_reset_pool(ngx_pool_t *pool);				//重置pool，但是只释放了large内存
 
-void *ngx_palloc(ngx_pool_t *pool, size_t size);
-void *ngx_palloc_just_large(ngx_pool_t *pool, size_t size);
+void *ngx_palloc(ngx_pool_t *pool, size_t size);				//申请
+void *ngx_palloc_just_large(ngx_pool_t *pool, size_t size);		//只申请大块内存
 
 
-ngx_int_t ngx_pfree(ngx_pool_t *pool, void *p);
+ngx_int_t ngx_pfree(ngx_pool_t *pool, void *p);					//只释放指定的大块内存
 
 
 
