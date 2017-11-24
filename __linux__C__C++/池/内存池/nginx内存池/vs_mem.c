@@ -2,12 +2,6 @@
 
 
 
-
-int 	block_nums;
-int 	large_nums;
-
-
-
 static ngx_inline void *ngx_palloc_small(ngx_pool_t *pool, size_t size);	//申请小块内存
 static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);				//看实现里的注释
 static void *ngx_palloc_large(ngx_pool_t *pool, size_t size);				//申请大块内存
@@ -85,10 +79,8 @@ void ngx_destroy_pool(ngx_pool_t *pool)
         }
     }
 
-	printf("t\n");
     for (p = pool, n = pool->d.next; /* void */; p = n, n = n->d.next) {
         ngx_free(p);
-		printf("t\n");
         if (n == NULL) {
             break;
         }
@@ -109,7 +101,8 @@ void ngx_reset_pool(ngx_pool_t *pool)
     }
 
     for (p = pool; p; p = p->d.next) {
-        p->d.last = (u_char *) p + sizeof(ngx_pool_t);
+        //p->d.last = (u_char *) p + sizeof(ngx_pool_t);		//nginx 就是这样，表示有疑问
+		p->d.last = (u_char *) p +  (p == pool ? sizeof(ngx_pool_t ) : sizeof(ngx_pool_data_t));
         p->d.failed = 0;
     }
 
@@ -122,6 +115,9 @@ void ngx_reset_pool(ngx_pool_t *pool)
 void *
 ngx_palloc(ngx_pool_t *pool, size_t size)
 {
+	if(size <= 0 ){
+		return NULL;
+	}
     if (size <= pool->max) {
         return ngx_palloc_small(pool, size);
     }
@@ -183,7 +179,7 @@ ngx_palloc_block(ngx_pool_t *pool, size_t size)
         }
     }
 
-    p->d.next = new;
+    p->d.next = new;					//尾插法
 	pool->block_nums++;
     return m;
 }
@@ -222,7 +218,7 @@ ngx_palloc_large(ngx_pool_t *pool, size_t size)
 
     large->alloc = p;
     large->next = pool->large;
-    pool->large = large;
+    pool->large = large;				//头插法
 	
 	pool->large_nums++;
     return p;
