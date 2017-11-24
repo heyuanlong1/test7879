@@ -1,6 +1,19 @@
 
 
-
+http://tengine.taobao.org/book/chapter_10.html
 https://www.cnblogs.com/magicsoar/p/6040238.html
 https://www.cnblogs.com/uestcjoel/p/6687785.html
 http://blog.csdn.net/cywosp/article/details/7044288
+
+
+理解步骤
+
+
+
+第1步.先简单看下网站地址
+第2步.理解它的结构体，（结合  http://tengine.taobao.org/book/chapter_10.html  的第一个图）
+第3步.看 ngx_create_pool函数
+第4步.看 ngx_palloc函数
+第5步.看 ngx_palloc_small 函数
+第6步.看 ngx_palloc_block 函数，理解ngx_palloc_block函数里面的注释，这里很重要！很重要！很重要！，你就能理解第2步里的那个图了。
+第7步.看 ngx_palloc_large 函数 （结合 https://www.cnblogs.com/magicsoar/p/6040238.html 第三个大图来理解）
