@@ -42,3 +42,11 @@ jps
 /data/zookeeper/zk/bin/zkCli.sh -server localhost:2181
 /data/zookeeper/zk/bin/zkCli.sh -server localhost:2182
 /data/zookeeper/zk/bin/zkCli.sh -server localhost:2183
+
+
+
+
+//-----------------------------------------------------stop
+/data/zookeeper/zk/bin/zkServer.sh stop /data/zookeeper/conf/zoo1.cfg
+/data/zookeeper/zk/bin/zkServer.sh stop /data/zookeeper/conf/zoo2.cfg
+/data/zookeeper/zk/bin/zkServer.sh stop /data/zookeeper/conf/zoo3.cfg
