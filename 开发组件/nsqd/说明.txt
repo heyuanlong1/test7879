@@ -1,0 +1,26 @@
+https://nsq.io/
+
+http://www.uml.org.cn/zjjs/201711011.asp  介绍得非常全面
+https://studygolang.com/articles/9749
+
+//////////////////////----------------------------------------部署
+
+nsqlookupd.exe --tcp-address=:4160 --http-address=:4161
+nsqd.exe --lookupd-tcp-address=127.0.0.1:4160 --http-address=:4141 --tcp-address=:4140 --data-path=nsqd1
+nsqd.exe --lookupd-tcp-address=127.0.0.1:4160 --http-address=:4151 --tcp-address=:4150 --data-path=nsqd2
+nsqadmin.exe --lookupd-http-address=127.0.0.1:4161 --http-address=:4171
+
+
+///////////////////////----------------------------------------测试客户端命令
+
+netstat -ano | findstr "0:41"
+curl -d hellox "http://127.0.0.1:4151/pub?topic=test"
+curl -d hello "http://127.0.0.1:4181/pub?topic=test7"
+
+nsq_to_file --topic=test222 --output-dir=tmp2 --lookupd-http-address=127.0.0.1:4161
+
+
+//////////////////////----------------------------------------golang 代码demo
+https://github.com/heyuanlong/go-test/tree/master/nsq-test
+
+
